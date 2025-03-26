@@ -44,7 +44,7 @@ Replace the `YOUR_TARIF` values with your actual rates:
 ```python
 TARIFFS = {
     "Water": 40.2,     # Example water rate per m^3
-    "Light": 50.65,   # Electricity rate per kWh
+    "Electricity": 50.65,   # Electricity rate per kWh
     "Gas": 7.99       # Gas rate per m^3
 }
 FIXED_WATER_FEE = 36.20
