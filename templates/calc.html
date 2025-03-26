@@ -1,53 +1,86 @@
 <!DOCTYPE html>
-<html lang="en"> <!-- Changed language to English -->
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Utility Bill Calculator</title> <!-- Translated title -->
+    <title>Utility Bill Calculator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;700&display=swap" rel="stylesheet">
+    <!-- Используем системный шрифт Apple как приоритетный, Montserrat как fallback -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Apply system font stack with Montserrat fallback */
+        body, input, button, textarea, select {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", 'Montserrat';
+        }
+        /* Ensure monospace font for results */
+        pre {
+             font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+    </style>
 </head>
 <body>
     <div class="window">
         <div class="window-bar">
+            <!-- Светофоры (возвращены) -->
             <div class="traffic-lights">
                 <div class="light red"></div>
                 <div class="light yellow"></div>
                 <div class="light green"></div>
             </div>
-            <label class="switch">
-              <input type="checkbox" id="theme-toggle">
-              <span class="slider"></span>
-            </label>
+
+            <!-- Контейнер для управления темой (справа) -->
+            <div class="theme-control-wrapper">
+                <span class="theme-label">Theme</span>
+                <label class="switch" aria-label="Toggle theme">
+                   <input type="checkbox" id="theme-toggle">
+                   <span class="slider round"></span>
+                </label>
+            </div>
         </div>
         <div class="window-content">
-            <h2>Utility Bill Calculator</h2> <!-- Translated heading -->
-            <form method="post">
-                <!-- Water Inputs -->
-                <label>💧 Previous Readings (Water):</label> <!-- Translated label -->
-                <input type="number" step="any" name="prev_Water" placeholder="Enter previous readings" required> <!-- Updated name, translated placeholder -->
-                <label>💧 Current Readings (Water):</label> <!-- Translated label -->
-                <input type="number" step="any" name="curr_Water" placeholder="Enter current readings" required> <!-- Updated name, translated placeholder -->
+           <h1>Utility Bill Calculator</h1>
 
-                <!-- Electricity Inputs -->
-                <label>💡 Previous Readings (Electricity):</label> <!-- Translated label -->
-                <input type="number" step="any" name="prev_Electricity" placeholder="Enter previous readings" required> <!-- Updated name, translated placeholder -->
-                <label>💡 Current Readings (Electricity):</label> <!-- Translated label -->
-                <input type="number" step="any" name="curr_Electricity" placeholder="Enter current readings" required> <!-- Updated name, translated placeholder -->
+            <form method="post" class="calculator-form">
+                <div class="form-grid">
+                    <!-- Water -->
+                    <div class="form-group">
+                        <label for="prev_Water">💧 Previous Water <span class="unit">(m³):</span></label>
+                        <input type="number" step="any" name="prev_Water" id="prev_Water" placeholder="e.g., 150.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="curr_Water">💧 Current Water <span class="unit">(m³):</span></label>
+                        <input type="number" step="any" name="curr_Water" id="curr_Water" placeholder="e.g., 165.8" required>
+                    </div>
 
-                <!-- Gas Inputs -->
-                <label>🔥 Previous Readings (Gas):</label> <!-- Translated label -->
-                <input type="number" step="any" name="prev_Gas" placeholder="Enter previous readings" required> <!-- Updated name, translated placeholder -->
-                <label>🔥 Current Readings (Gas):</label> <!-- Translated label -->
-                <input type="number" step="any" name="curr_Gas" placeholder="Enter current readings" required> <!-- Updated name, translated placeholder -->
+                    <!-- Electricity -->
+                    <div class="form-group">
+                        <label for="prev_Electricity">💡 Previous Electricity <span class="unit">(kWh):</span></label>
+                        <input type="number" step="any" name="prev_Electricity" id="prev_Electricity" placeholder="e.g., 12345" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="curr_Electricity">💡 Current Electricity <span class="unit">(kWh):</span></label>
+                        <input type="number" step="any" name="curr_Electricity" id="curr_Electricity" placeholder="e.g., 12500" required>
+                    </div>
 
-                <button type="submit">Calculate</button> <!-- Translated button text -->
+                    <!-- Gas -->
+                    <div class="form-group">
+                        <label for="prev_Gas">🔥 Previous Gas <span class="unit">(m³):</span></label>
+                        <input type="number" step="any" name="prev_Gas" id="prev_Gas" placeholder="e.g., 5400" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="curr_Gas">🔥 Current Gas <span class="unit">(m³):</span></label>
+                        <input type="number" step="any" name="curr_Gas" id="curr_Gas" placeholder="e.g., 5480" required>
+                    </div>
+                </div>
+
+                <button type="submit">Calculate</button>
             </form>
 
-            <div class="tariffs">
-                <h3>📋 Current Tariffs:</h3> <!-- Translated heading -->
+            <div class="tariffs panel">
+                <h3>📋 Current Tariffs:</h3>
                 <ul>
-                    <!-- Updated keys, translated text, currency, and units -->
                     <li>💧 Water: {{ tariffs['Water'] }} UAH/m³ + {{ fixed_water }} UAH surcharge</li>
                     <li>💡 Electricity: {{ tariffs['Electricity'] }} UAH/kWh</li>
                     <li>🔥 Gas: {{ tariffs['Gas'] }} UAH/m³</li>
@@ -55,14 +88,13 @@
             </div>
 
             {% if result %}
-            <div class="result">
-                <h3>Results:</h3> <!-- Translated heading -->
-                <pre>{{ result }}</pre> <!-- Result variable already contains translated text from Python -->
+            <div class="result panel">
+                <h3>📊 Results:</h3>
+                <pre>{{ result }}</pre>
             </div>
             {% endif %}
         </div>
     </div>
-    <!-- Assuming script.js doesn't contain user-facing Ukrainian text or can be handled separately -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
