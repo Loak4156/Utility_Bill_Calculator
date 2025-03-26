@@ -12,9 +12,9 @@ app = Flask(__name__)
 # The keys ("Water", "Electricity", "Gas") are used both for display
 # and to construct the form field names (e.g., "prev_Water", "curr_Electricity").
 TARIFFS = {
-    "Water": YOUR_TARIFF,       # Tariff for Water consumption
-    "Electricity": YOUR_TARIFF, # Tariff for Electricity consumption
-    "Gas": YOUR_TARIFF          # Tariff for Gas consumption
+    "Water": 40,       # Tariff for Water consumption
+    "Electricity": 45, # Tariff for Electricity consumption
+    "Gas": 8          # Tariff for Gas consumption
 }
 
 # Define a fixed fee that is added specifically to the water bill.
