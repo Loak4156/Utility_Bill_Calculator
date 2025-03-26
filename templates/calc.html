@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Changed language to English -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utility Bill Calculator</title> <!-- Translated title -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="window">
+        <div class="window-bar">
+            <div class="traffic-lights">
+                <div class="light red"></div>
+                <div class="light yellow"></div>
+                <div class="light green"></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="theme-toggle">
+              <span class="slider"></span>
+            </label>
+        </div>
+        <div class="window-content">
+            <h2>Utility Bill Calculator</h2> <!-- Translated heading -->
+            <form method="post">
+                <!-- Water Inputs -->
+                <label>💧 Previous Readings (Water):</label> <!-- Translated label -->
+                <input type="number" step="any" name="prev_Water" placeholder="Enter previous readings" required> <!-- Updated name, translated placeholder -->
+                <label>💧 Current Readings (Water):</label> <!-- Translated label -->
+                <input type="number" step="any" name="curr_Water" placeholder="Enter current readings" required> <!-- Updated name, translated placeholder -->
+
+                <!-- Electricity Inputs -->
+                <label>💡 Previous Readings (Electricity):</label> <!-- Translated label -->
+                <input type="number" step="any" name="prev_Electricity" placeholder="Enter previous readings" required> <!-- Updated name, translated placeholder -->
+                <label>💡 Current Readings (Electricity):</label> <!-- Translated label -->
+                <input type="number" step="any" name="curr_Electricity" placeholder="Enter current readings" required> <!-- Updated name, translated placeholder -->
+
+                <!-- Gas Inputs -->
+                <label>🔥 Previous Readings (Gas):</label> <!-- Translated label -->
+                <input type="number" step="any" name="prev_Gas" placeholder="Enter previous readings" required> <!-- Updated name, translated placeholder -->
+                <label>🔥 Current Readings (Gas):</label> <!-- Translated label -->
+                <input type="number" step="any" name="curr_Gas" placeholder="Enter current readings" required> <!-- Updated name, translated placeholder -->
+
+                <button type="submit">Calculate</button> <!-- Translated button text -->
+            </form>
+
+            <div class="tariffs">
+                <h3>📋 Current Tariffs:</h3> <!-- Translated heading -->
+                <ul>
+                    <!-- Updated keys, translated text, currency, and units -->
+                    <li>💧 Water: {{ tariffs['Water'] }} UAH/m³ + {{ fixed_water }} UAH surcharge</li>
+                    <li>💡 Electricity: {{ tariffs['Electricity'] }} UAH/kWh</li>
+                    <li>🔥 Gas: {{ tariffs['Gas'] }} UAH/m³</li>
+                </ul>
+            </div>
+
+            {% if result %}
+            <div class="result">
+                <h3>Results:</h3> <!-- Translated heading -->
+                <pre>{{ result }}</pre> <!-- Result variable already contains translated text from Python -->
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Assuming script.js doesn't contain user-facing Ukrainian text or can be handled separately -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
